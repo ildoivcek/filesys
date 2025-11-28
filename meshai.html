@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ESP32 CAM Panel</title>
+
+<style>
+body { 
+  font-family: Arial; 
+  text-align: center; 
+  margin: 0; padding: 0; 
+  background: #f0f0f0;
+}
+#loginBox, #camBox { 
+  margin-top: 60px; 
+}
+input {
+  padding: 10px; 
+  margin: 5px; 
+  width: 200px;
+  font-size: 16px;
+}
+button {
+  padding: 10px 20px; 
+  font-size: 16px; 
+  margin-top: 10px;
+}
+#clock {
+  font-size: 20px;
+  margin-top: 20px;
+  color: #333;
+}
+.arrow {
+  font-size: 30px;
+  padding: 10px 20px;
+}
+</style>
+</head>
+
+<body>
+
+логін
+<div id="loginBox">
+  <h2>Вхід</h2>
+  <input id="user" type="text" placeholder="Логін"><br>
+  <input id="pass" type="password" placeholder="Пароль"><br>
+  <button onclick="login()">Увійти</button>
+</div>
+
+
+<div id="camBox" style="display:none;">
+  <h1>Перегляд камер</h1>
+
+  <div id="clock"></div>
+
+  <br>
+
+  <button class="arrow" onclick="prevCam()">⬅</button>
+  <button class="arrow" onclick="nextCam()">➡</button>
+
+  <br><br>
+
+  <img id="camStream" width="90%" style="border:2px solid black;border-radius:10px;">
+</div>
+
+
+<script>
+
+    function login() {
+  const u = document.getElementById("user").value;
+  const p = document.getElementById("pass").value;
+
+  const goodUser = "admin";
+  const goodPass = "1234";
+
+  if (u === goodUser && p === goodPass) {
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("camBox").style.display = "block";
+    startClock();
+    updateCam();
+  } else {
+    alert("Невірний логін або пароль");
+  }
+}
+
+
+let cams = [
+  "http://192.168.4.1:81/stream",
+  "http://192.168.4.2:81/stream",
+  "http://192.168.4.3:81/stream"
+];
+
+let camId = 0;
+
+function updateCam() {
+  document.getElementById("camStream").src = cams[camId] + "?t=" + new Date().getTime();
+}
+
+function nextCam() {
+  camId = (camId + 1) % cams.length;
+  updateCam();
+}
+
+function prevCam() {
+  camId = (camId - 1 + cams.length) % cams.length;
+  updateCam();
+}
+
+
+годинник
+function startClock() {
+  setInterval(() => {
+    let now = new Date();
+    document.getElementById("clock").innerText =
+      now.toLocaleTimeString("uk-UA");
+  }, 1000);
+}
+</script>
+
+</body>
+</html>
