@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+<style>
+body { font-family: Arial; background: #222; color: white; display: flex; height: 100vh; justify-content: center; align-items: center; }
+.box { background: #333; padding: 20px; border-radius: 10px; text-align: center; width: 300px; }
+input { padding: 10px; margin: 10px 0; width: 90%; }
+button { padding: 10px 20px; background: #4CAF50; color: white; border: none; cursor: pointer; width: 100%; }
+</style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Security Login</h2>
+  <input id="user" type="text" placeholder="Username">
+  <input id="pass" type="password" placeholder="Password">
+  <button onclick="login()">Enter</button>
+</div>
+
+<script>
+function login() {
+  const u = document.getElementById("user").value;
+  const p = document.getElementById("pass").value;
+  
+  if (u === "admin" && p === "1234") {
+    window.location.href = "/view";
+  } else {
+    alert("Wrong password!");
+  }
+}
+</script>
+
+</body>
+</html>
